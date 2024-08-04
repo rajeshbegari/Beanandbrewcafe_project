@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import { AuthContext } from '../context/AuthContext';
-import { CartContext } from '../context/CartContext'; // Import CartContext
-import { auth } from '../firebaseConfig';
-import { FaUser, FaGlobe, FaShoppingCart } from 'react-icons/fa'; // Import FaShoppingCart
+import { CartContext } from '../context/CartContext';
+import { FaUser, FaGlobe, FaShoppingCart } from 'react-icons/fa';
 import '../styles.css';
 import { useTranslation } from 'react-i18next';
 
@@ -13,14 +12,20 @@ const Header = () => {
   const { t, i18n } = useTranslation();
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const { user } = useContext(AuthContext);
-  const { cartItems } = useContext(CartContext); // Use CartContext
+  const { user, logout } = useContext(AuthContext);
+  const { cartItems } = useContext(CartContext);
   const [language, setLanguage] = useState('en');
+  const navigate = useNavigate();
 
   const toggleLanguage = () => {
     const newLanguage = language === 'en' ? 'fr' : 'en';
     setLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -43,7 +48,7 @@ const Header = () => {
         {user ? (
           <div className="user-menu">
             <span>{t('Welcome!')} {user.firstName} {user.lastName}</span>
-            <button onClick={() => auth.signOut()}>{t('Logout')}</button>
+            <button onClick={handleLogout}>{t('Logout')}</button>
             <div className="dropdown">
               <FaUser className="user-icon" />
               <div className="dropdown-content">
