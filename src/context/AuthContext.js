@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { auth, db } from '../firebaseConfig';
+import { auth, db, storage } from '../firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 
@@ -31,6 +31,9 @@ const AuthProvider = ({ children }) => {
       email: user.email,
       firstName: firstName,
       lastName: lastName,
+      address: '',
+      phoneNumber: '',
+      profilePictureUrl: '',
     });
     await setDoc(doc(db, 'wishlists', user.uid), {
       items: [],
@@ -111,12 +114,19 @@ const AuthProvider = ({ children }) => {
     removeFromCart(item.id);
   };
 
+  const logout = () => {
+    auth.signOut().then(() => {
+      setUser(null);
+    });
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
       register, 
       login, 
       resetPassword, 
+      logout,
       wishlist, 
       addToWishlist, 
       removeFromWishlist, 
