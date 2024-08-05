@@ -16,12 +16,15 @@ import Cart from './pages/Cart';
 import Order from './pages/Order';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import ErrorBoundary from './components/ErrorBoundary';
+import MyAccount from './components/MyAccount';
 import './styles.css';
 
-const stripePromise = loadStripe('your-stripe-public-key');
+const stripePromise = loadStripe('pk_test_51Pju1z08k0nHIvbw5cvH5RvHpaKxzOJBcNCKKRpkJ');
 
 const App = () => {
   return (
+    <ErrorBoundary>
     <Router>
       <div id="root">
         <Header />
@@ -39,11 +42,13 @@ const App = () => {
             <Route path="/book-table" element={<BookTable />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/:id" element={<Order />} />
+            <Route path="/my-account" element={<MyAccount />} />
           </Routes>
         </Elements>
         <Footer />
       </div>
     </Router>
+  </ErrorBoundary>
   );
 };
 
