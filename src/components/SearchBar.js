@@ -4,7 +4,15 @@ const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
   const handleSearch = () => {
-    onSearch(query);
+    if (query.trim()) {
+      onSearch(query.trim());
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -14,8 +22,10 @@ const SearchBar = ({ onSearch }) => {
         placeholder="Search for coffee types..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyPress={handleKeyPress}
       />
-      <button onClick={handleSearch}>Filter</button>
+      <button onClick={handleSearch}>Search</button>
+      <button>Filter</button>
       <button>Customer Support</button>
     </div>
   );
