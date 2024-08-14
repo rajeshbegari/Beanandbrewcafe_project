@@ -1,19 +1,19 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 
 const specialOffersData = [
-  { id: 1, caption: 'Espresso', beforePrice: '$5.00', currentPrice: '$3.00', image: 'path_to_image1.jpg' },
-  { id: 2, caption: 'Latte', beforePrice: '$6.00', currentPrice: '$4.50', image: 'path_to_image2.jpg' },
-  { id: 3, caption: 'Cappuccino', beforePrice: '$5.50', currentPrice: '$3.50', image: 'path_to_image3.jpg' },
-  { id: 4, caption: 'Americano', beforePrice: '$4.50', currentPrice: '$3.00', image: 'path_to_image4.jpg' },
-  { id: 5, caption: 'Mocha', beforePrice: '$6.50', currentPrice: '$5.00', image: 'path_to_image5.jpg' },
-  { id: 6, caption: 'Macchiato', beforePrice: '$5.75', currentPrice: '$4.25', image: 'path_to_image6.jpg' },
-  { id: 7, caption: 'Flat White', beforePrice: '$5.25', currentPrice: '$4.00', image: 'path_to_image7.jpg' },
-  { id: 8, caption: 'Iced Coffee', beforePrice: '$4.75', currentPrice: '$3.50', image: 'path_to_image8.jpg' },
-  { id: 9, caption: 'Cold Brew', beforePrice: '$5.00', currentPrice: '$3.75', image: 'path_to_image9.jpg' },
+  { id: 1, caption: 'Espresso', captionTag: 'from Special Offers', beforePrice: '$5.00', currentPrice: '$3.00', image: `${process.env.PUBLIC_URL}/images/espresso.jpeg` },
+  { id: 2, caption: 'Latte', captionTag: 'from Special Offers', beforePrice: '$6.00', currentPrice: '$4.50', image: `${process.env.PUBLIC_URL}/images/latte.jpeg` },
+  { id: 3, caption: 'Cappuccino', beforePrice: '$5.50', currentPrice: '$3.50', image: `${process.env.PUBLIC_URL}/images/cappuccino.jpeg` },
+  { id: 4, caption: 'Americano', beforePrice: '$4.50', currentPrice: '$3.00', image: `${process.env.PUBLIC_URL}/images/americano.jpeg` },
+  { id: 5, caption: 'Mocha', beforePrice: '$6.50', currentPrice: '$5.00', image: `${process.env.PUBLIC_URL}/images/mocha.jpeg` },
+  { id: 6, caption: 'Macchiato', beforePrice: '$5.75', currentPrice: '$4.25', image: `${process.env.PUBLIC_URL}/images/macchiato.jpeg` },
+  { id: 7, caption: 'Flat White', beforePrice: '$5.25', currentPrice: '$4.00', image: `${process.env.PUBLIC_URL}/images/flatwhite.jpeg` },
+  { id: 8, caption: 'Iced Coffee', beforePrice: '$4.75', currentPrice: '$3.50', image: `${process.env.PUBLIC_URL}/images/icedcoffee.jpeg` },
+  { id: 9, caption: 'Cold Brew', beforePrice: '$5.00', currentPrice: '$3.75', image: `${process.env.PUBLIC_URL}/images/cortado.jpeg` },
+  // Additional offers...
 ];
 
 const SpecialOffers = () => {
@@ -29,17 +29,25 @@ const SpecialOffers = () => {
   const handleAddToCart = (item) => {
     addToCart({
       ...item,
-      price: item.currentPrice // Ensure price is properly formatted
+      price: item.currentPrice,
+      quantity: 1,
+      captionTag: null,
     });
     setMessage('Added to Cart');
     setTimeout(() => {
       setMessage('');
       navigate('/cart');
-    }, 2000); // Display message for 2 seconds before redirecting to Cart page
+    }, 2000);
   };
 
   const handleOrder = (item) => {
-    navigate(`/order/${item.id}`, { state: { item, referrer: '/special-offers' } });
+    // Remove the captionTag when passing the item to the Order page
+    const itemForOrder = {
+      ...item,
+      captionTag: undefined,
+      price: item.currentPrice,
+    };
+    navigate(`/order/${item.id}`, { state: { item: itemForOrder, referrer: '/special-offers' } });
   };
 
   return (
@@ -71,3 +79,6 @@ const SpecialOffers = () => {
 };
 
 export default SpecialOffers;
+
+
+
