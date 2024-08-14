@@ -7,11 +7,28 @@ const CartProvider = ({ children }) => {
   const [lastVisitedPage, setLastVisitedPage] = useState('/');
 
   const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(i => i.id === item.id);
+      if (existingItem) {
+        return prevItems.map(i =>
+          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+        );
+      } else {
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
   };
 
   const removeFromCart = (itemId) => {
     setCartItems(cartItems.filter(item => item.id !== itemId));
+  };
+
+  const updateCartItemQuantity = (itemId, quantity) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, quantity } : item
+      )
+    );
   };
 
   const clearCart = () => {
@@ -23,6 +40,7 @@ const CartProvider = ({ children }) => {
       cartItems, 
       addToCart, 
       removeFromCart, 
+      updateCartItemQuantity,
       clearCart,
       lastVisitedPage, 
       setLastVisitedPage 
