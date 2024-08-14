@@ -977,7 +977,10 @@ main {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
+  
 }
+
+
 
 .order-summary .order-item {
   display: flex;
@@ -1192,14 +1195,14 @@ main {
   /* search results */
   .search-results-container {
     padding: 100px;
-    margin: 10 auto;
+    margin: 5px auto;
     background-color: #f9f9f9;
     min-height: 5vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(9px + 1.5vmin);
+    font-size: calc(15px + 1vmin);
     
     
   }
