@@ -12,39 +12,57 @@ const Order = () => {
   const item = location.state?.item || null;
   const referrer = location.state?.referrer || '/';
   const [message, setMessage] = useState('');
+  const [quantity, setQuantity] = useState(1);
 
   if (!item) {
     return <p>Item not found.</p>;
   }
 
-  const federalTaxRate = 0.05; // Canada Federal Tax Rate
-  const quebecTaxRate = 0.09975; // Quebec Tax Rate
+  const itemPrice = item.price ? parseFloat(item.price.replace('$', '')) : 0;
 
-  const subtotal = parseFloat(item.currentPrice.slice(1));
+  const federalTaxRate = 0.05;
+  const quebecTaxRate = 0.09975;
+
+  const subtotal = itemPrice * quantity;
   const federalTax = subtotal * federalTaxRate;
   const quebecTax = subtotal * quebecTaxRate;
   const total = subtotal + federalTax + quebecTax;
 
+  const handleQuantityChange = (delta) => {
+    setQuantity((prevQuantity) => Math.max(prevQuantity + delta, 1));
+  };
+
   const handleAddToCart = () => {
-    addToCart(item);
+    addToCart({
+      ...item,
+      price: item.price,
+      quantity,
+      captionTag: item.captionTag, // Ensure the captionTag is maintained
+    });
     setMessage('Added to Cart');
     setTimeout(() => {
       setMessage('');
       navigate(referrer);
-    }, 2000); // Display message for 2 seconds before redirecting to the referrer page
+    }, 2000);
   };
 
   const handleAddToWishlist = () => {
     if (user) {
-      addToWishlist(item);
+      addToWishlist({ ...item, quantity });
       setMessage('Added to Wishlist');
       setTimeout(() => {
         setMessage('');
         navigate(referrer);
-      }, 2000); // Display message for 2 seconds before redirecting
+      }, 2000);
     } else {
       alert('You need to be logged in to add items to the wishlist.');
     }
+  };
+
+  const handleCheckout = () => {
+    const newCartItem = { ...item, price: item.price, quantity, captionTag: item.captionTag };
+    addToCart(newCartItem);
+    navigate('/checkout', { state: { orderItems: [newCartItem] } });
   };
 
   return (
@@ -60,8 +78,34 @@ const Order = () => {
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                  <h5 className="card-title">{item.caption}</h5>
-                    <p className="card-text"><strong>{item.currentPrice}</strong></p>
+                    <h5 className="card-title">
+                      {item.caption}
+                      {item.captionTag && (
+                        <span style={{ fontStyle: 'italic', color: 'gray' }}> {item.captionTag}</span>
+                      )}
+                    </h5>
+                    <div className="quantity-control">
+                      <button
+                        className="quantity-btn"
+                        onClick={() => handleQuantityChange(-1)}
+                        disabled={quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        value={quantity}
+                        readOnly
+                        className="quantity-input"
+                      />
+                      <button
+                        className="quantity-btn"
+                        onClick={() => handleQuantityChange(1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <p className="card-text"><strong>${(itemPrice * quantity).toFixed(2)}</strong></p>
                     <button className="btn btn-secondary mr-2" onClick={handleAddToCart}>Add to Cart</button>
                     <button className="btn btn-info" onClick={handleAddToWishlist}>Add to Wishlist</button>
                   </div>
@@ -74,12 +118,16 @@ const Order = () => {
               <div className="card-body">
                 <h5 className="card-title">Summary</h5>
                 <p className="card-text">Item: {item.caption}</p>
-                <p className="card-text">Price: {item.currentPrice}</p>
+                {item.captionTag && (
+                  <p className="card-text"><span style={{ fontStyle: 'italic', color: 'gray' }}>{item.captionTag}</span></p>
+                )}
+                <p className="card-text">Price: {item.price}</p>
+                <p className="card-text">Quantity: {quantity}</p>
                 <p className="card-text">Subtotal: ${subtotal.toFixed(2)}</p>
                 <p className="card-text">Federal Tax: ${federalTax.toFixed(2)}</p>
                 <p className="card-text">Quebec Tax: ${quebecTax.toFixed(2)}</p>
                 <h5 className="card-title">Total: ${total.toFixed(2)}</h5>
-                <button className="btn btn-primary">Checkout</button>
+                <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
               </div>
             </div>
           </div>
@@ -91,4 +139,5 @@ const Order = () => {
 };
 
 export default Order;
+
 
