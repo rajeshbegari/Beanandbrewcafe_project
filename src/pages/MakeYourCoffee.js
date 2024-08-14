@@ -27,51 +27,6 @@ const coffeeTypes = [
       { id: 2, caption: 'Milk', price: '1.50', image: `${process.env.PUBLIC_URL}/images/Milk.jpeg` },
     ],
   },
-  /*{
-    id: 3,
-    caption: 'Cappuccino',
-    description: 'Frothy and rich cappuccino.',
-    price: '4.50',
-    image: `${process.env.PUBLIC_URL}/images/cappuccino.jpg`,
-    ingredients: [
-      { id: 1, caption: 'Espresso Shot', price: '1.00', image: `${process.env.PUBLIC_URL}/images/espresso_shot.jpg` },
-      { id: 2, caption: 'Milk Foam', price: '1.50', image: `${process.env.PUBLIC_URL}/images/milk_foam.jpg` },
-    ],
-  },
-  {
-    id: 4,
-    caption: 'Americano',
-    description: 'Bold and smooth americano.',
-    price: '3.50',
-    image: `${process.env.PUBLIC_URL}/images/americano.jpg`,
-    ingredients: [
-      { id: 1, caption: 'Espresso Shot', price: '1.00', image: `${process.env.PUBLIC_URL}/images/espresso_shot.jpg` },
-      { id: 2, caption: 'Hot Water', price: '0.50', image: `${process.env.PUBLIC_URL}/images/hot_water.jpg` },
-    ],
-  },
-  {
-    id: 5,
-    caption: 'Mocha',
-    description: 'Delicious and chocolatey mocha.',
-    price: '5.00',
-    image: `${process.env.PUBLIC_URL}/images/mocha.jpg`,
-    ingredients: [
-      { id: 1, caption: 'Espresso Shot', price: '1.00', image: `${process.env.PUBLIC_URL}/images/espresso_shot.jpg` },
-      { id: 2, caption: 'Milk', price: '1.50', image: `${process.env.PUBLIC_URL}/images/milk.jpg` },
-      { id: 3, caption: 'Chocolate Syrup', price: '2.00', image: `${process.env.PUBLIC_URL}/images/chocolate_syrup.jpg` },
-    ],
-  },
-  {
-    id: 6,
-    caption: 'Flat White',
-    description: 'Smooth and velvety flat white.',
-    price: '4.00',
-    image: `${process.env.PUBLIC_URL}/images/flat_white.jpg`,
-    ingredients: [
-      { id: 1, caption: 'Espresso Shot', price: '1.00', image: `${process.env.PUBLIC_URL}/images/espresso_shot.jpg` },
-      { id: 2, caption: 'Milk', price: '1.50', image: `${process.env.PUBLIC_URL}/images/milk.jpg` },
-    ],
-  },*/
 ];
 
 const MakeYourCoffee = () => {
@@ -100,10 +55,11 @@ const MakeYourCoffee = () => {
   };
 
   const calculateSummary = () => {
-    const subtotal = selectedIngredients.reduce((total, ingredient) => {
+    const ingredientsTotal = selectedIngredients.reduce((total, ingredient) => {
       return total + parseFloat(ingredient.price);
     }, 0);
 
+    const subtotal = parseFloat(selectedCoffee.price) + ingredientsTotal;
     const federalTax = subtotal * 0.05;
     const quebecTax = subtotal * 0.09975;
     const total = subtotal + federalTax + quebecTax;
@@ -118,16 +74,31 @@ const MakeYourCoffee = () => {
 
   const handleCheckout = () => {
     if (summary) {
-      navigate('/checkout', { state: { summary, selectedIngredients, selectedCoffee } });
+      navigate('/checkout', { 
+        state: { 
+          orderItems: [{
+            id: selectedCoffee.id,
+            caption: `${selectedCoffee.caption} Special`,
+            description: selectedCoffee.description,
+            price: `$${summary.subtotal}`,
+            image: selectedCoffee.image,
+            quantity: 1,
+            ingredients: selectedIngredients
+          }]
+        }
+      });
     }
   };
 
   const handleAddToCart = () => {
     if (summary) {
       addToCart({
+        id: selectedCoffee.id,
         caption: `${selectedCoffee.caption} Special`,
-        price: summary.subtotal,
+        price: `$${summary.subtotal}`,
+        image: selectedCoffee.image,
         ingredients: selectedIngredients,
+        quantity: 1
       });
       setMessage('Added to cart successfully!');
     }
@@ -141,8 +112,12 @@ const MakeYourCoffee = () => {
   const handleAddToWishlist = () => {
     if (summary && user) {
       addToWishlist({
+        id: selectedCoffee.id,
         caption: `${selectedCoffee.caption} Special`,
-        price: summary.subtotal,
+        description: selectedCoffee.description,
+        price: `$${summary.subtotal}`,
+        image: selectedCoffee.image,
+        quantity: 1,
         ingredients: selectedIngredients,
       });
       setMessage('Added to wishlist successfully!');
