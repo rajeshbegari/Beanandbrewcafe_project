@@ -5,20 +5,20 @@ import { AuthContext } from '../context/AuthContext';
 import '../Styles/ViewMenu.css';
 
 const menuData = [
-    { id: 1, caption: 'Expresso', description: 'Strong, rich coffee brewed by forcing hot water through finely-ground beans.', price: '$10', image: '../images/expresso.jpeg' },
-    { id: 2, caption: 'Latte', description: 'Smooth espresso with steamed milk, topped with a light foam.', price: '$15', image: '../images/latte.jpeg' },
-    { id: 3, caption: 'Cappuccino', description: 'Equal parts espresso, steamed milk, and foam, offering a creamy texture.', price: '$10', image: '../images/cappuccino.jpeg' },
-    { id: 4, caption: 'Americano', description: 'Espresso diluted with hot water, similar to drip coffee in strength.', price: '$15', image: '../images/americano.jpeg' },
-    { id: 5, caption: 'Mocha', description: 'Espresso mixed with steamed milk and chocolate syrup, topped with whipped cream.', price: '$10', image: '../images/mocha.jpeg' },
-    { id: 6, caption: 'Macchiato', description: 'Espresso with a dash of steamed milk and foam for a bold flavor.', price: '$15', image: '../images/macchiato.jpeg' },
-    { id: 7, caption: 'Flat White', description: 'Espresso with microfoam, offering a stronger coffee-to-milk ratio than a latte.', price: '$10', image: '../images/flatwhite.jpeg' },
-    { id: 8, caption: 'Affogato', description: 'Espresso poured over a scoop of vanilla ice cream.', price: '$15', image: '../images/affogato.jpeg' },
-    { id: 9, caption: 'Cortado', description: 'Equal parts espresso and steamed milk, providing a balanced flavor.', price: '$10', image: '../images/cortado.jpeg' },
-    { id: 10, caption: 'Iced Coffee', description: 'Brewed coffee cooled and served over ice, customizable with sweeteners and flavors.', price: '$15', image: '../images/icedcoffee.jpeg' },
-    { id: 11, caption: 'Double Double', description: 'Canadian classic. Two creams and two sugars.', price: '$10', image: '../images/doubleexpresso.jpeg' },
-    { id: 12, caption: 'Red Eye', description: 'A shot of espresso added for an extra caffeine kick.', price: '$15', image: '../images/redeye.jpeg' },
-    { id: 13, caption: 'Café au Lait', description: 'Equal parts steamed milk, using brewed coffee as the basis.', price: '$10', image: '../images/CaféauLait.jpeg' },
-    { id: 14, caption: 'Caramel Macchiato', description: 'Espresso with steamed milk, vanilla syrup, and a drizzle of caramel sauce, creating a sweet and creamy coffee.', price: '$15', image: '../images/caramelmacchiato.jpeg' },
+    { id: 1, caption: 'Espresso', description: 'Strong, rich coffee brewed by forcing hot water through finely-ground beans.', price: '$10', image: `${process.env.PUBLIC_URL}/images/espresso.jpeg` },
+    { id: 2, caption: 'Latte', description: 'Smooth espresso with steamed milk, topped with a light foam.', price: '$15', image: `${process.env.PUBLIC_URL}/images/latte.jpeg` },
+    { id: 3, caption: 'Cappuccino', description: 'Equal parts espresso, steamed milk, and foam, offering a creamy texture.', price: '$10', image: `${process.env.PUBLIC_URL}/images/cappuccino.jpeg` },
+    { id: 4, caption: 'Americano', description: 'Espresso diluted with hot water, similar to drip coffee in strength.', price: '$15', image: `${process.env.PUBLIC_URL}/images/americano.jpeg` },
+    { id: 5, caption: 'Mocha', description: 'Espresso mixed with steamed milk and chocolate syrup, topped with whipped cream.', price: '$10', image: `${process.env.PUBLIC_URL}/images/mocha.jpeg` },
+    { id: 6, caption: 'Macchiato', description: 'Espresso with a dash of steamed milk and foam for a bold flavor.', price: '$15', image: `${process.env.PUBLIC_URL}/images/macchiato.jpeg` },
+    { id: 7, caption: 'Flat White', description: 'Espresso with microfoam, offering a stronger coffee-to-milk ratio than a latte.', price: '$10', image: `${process.env.PUBLIC_URL}/images/flatwhite.jpeg` },
+    { id: 8, caption: 'Affogato', description: 'Espresso poured over a scoop of vanilla ice cream.', price: '$15', image: `${process.env.PUBLIC_URL}/images/affogato.jpeg` },
+    { id: 9, caption: 'Cortado', description: 'Equal parts espresso and steamed milk, providing a balanced flavor.', price: '$10', image: `${process.env.PUBLIC_URL}/images/cortado.jpeg` },
+    { id: 10, caption: 'Iced Coffee', description: 'Brewed coffee cooled and served over ice, customizable with sweeteners and flavors.', price: '$15', image: `${process.env.PUBLIC_URL}/images/icedcoffee.jpeg` },
+    { id: 11, caption: 'Double Double', description: 'Canadian classic. Two creams and two sugars.', price: '$10', image: `${process.env.PUBLIC_URL}/images/doubleexpresso.jpeg` },
+    { id: 12, caption: 'Red Eye', description: 'A shot of espresso added for an extra caffeine kick.', price: '$15', image: `${process.env.PUBLIC_URL}/images/redeye.jpeg` },
+    { id: 13, caption: 'Café au Lait', description: 'Equal parts steamed milk, using brewed coffee as the basis.', price: '$10', image: `${process.env.PUBLIC_URL}/images/CaféauLait.jpeg` },
+    { id: 14, caption: 'Caramel Macchiato', description: 'Espresso with steamed milk, vanilla syrup, and a drizzle of caramel sauce, creating a sweet and creamy coffee.', price: '$15', image: `${process.env.PUBLIC_URL}/images/caramelmacchiato.jpeg` },
 ];
 
 const ViewMenu = () => {
@@ -32,7 +32,11 @@ const ViewMenu = () => {
   }, [setLastVisitedPage]);
 
   const handleAddToCart = (item) => {
-    addToCart(item);
+    addToCart({
+      ...item,
+      price: item.price,
+      quantity: 1
+    });
     setMessage('Added to Cart');
     setTimeout(() => setMessage(''), 2000);
   };
@@ -48,7 +52,7 @@ const ViewMenu = () => {
   };
 
   const handlePayWithPaypal = (item) => {
-    navigate('/checkout', { state: { paymentMethod: 'Paypal', item } });
+    navigate('/checkout', { state: { orderItems: [{ ...item, quantity: 1 }] } });
   };
 
   return (
@@ -70,5 +74,3 @@ const ViewMenu = () => {
 };
 
 export default ViewMenu;
-
-
