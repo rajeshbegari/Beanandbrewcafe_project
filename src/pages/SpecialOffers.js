@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
+import '../styles.css';
 
 const specialOffersData = [
   { id: 1, caption: 'Espresso', captionTag: 'from Special Offers', beforePrice: '$5.00', currentPrice: '$3.00', image: `${process.env.PUBLIC_URL}/images/espresso.jpeg` },
@@ -41,13 +42,27 @@ const SpecialOffers = () => {
   };
 
   const handleOrder = (item) => {
-    // Remove the captionTag when passing the item to the Order page
     const itemForOrder = {
       ...item,
       captionTag: undefined,
       price: item.currentPrice,
     };
     navigate(`/order/${item.id}`, { state: { item: itemForOrder, referrer: '/special-offers' } });
+  };
+
+  const handleAddToWishlist = (item) => {
+    if (user) {
+      addToWishlist({
+        ...item,
+        price: item.currentPrice,
+      });
+      setMessage('Added to Wishlist');
+    } else {
+      setMessage('You need to be logged in to add items to the wishlist.');
+    }
+    setTimeout(() => {
+      setMessage('');
+    }, 2000);
   };
 
   return (
@@ -66,7 +81,7 @@ const SpecialOffers = () => {
                   </p>
                   <button className="btn btn-primary mr-2" onClick={() => handleOrder(offer)}>Order</button>
                   <button className="btn btn-secondary mr-2" onClick={() => handleAddToCart(offer)}>Add to Cart</button>
-                  <button className="btn btn-info" onClick={() => addToWishlist(offer)}>Add to Wishlist</button>
+                  <button className="btn btn-info" onClick={() => handleAddToWishlist(offer)}>Add to Wishlist</button>
                 </div>
               </div>
             </div>
