@@ -23,12 +23,18 @@ const SpecialOffers = () => {
           <div key={offer.id} className="offer-item">
             <img src={offer.image} alt={offer.name} />
             <h3>{offer.name}</h3>
-            <p>{offer.price}</p>
-            <button onClick={() => addToCart({ ...offer, price: offer.price })}>
+            <p>
+              <span style={{ textDecoration: 'line-through', color: 'red' }}>
+                {offer.beforePrice}
+              </span>
+              &nbsp;&nbsp;
+              <span>{offer.currentPrice}</span>
+            </p>
+            <button onClick={() => addToCart({ ...offer, price: offer.currentPrice })}>
               Add to Cart
             </button>
             <button onClick={() => addToWishlist(offer)}>Add to Wishlist</button>
-            <PayPalButton amount={offer.price.replace('$', '')} />
+            <PayPalButton amount={offer.currentPrice.replace('$', '')} />
           </div>
         ))}
       </div>
