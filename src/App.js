@@ -5,6 +5,7 @@ import Banner from './components/Banner';
 import SpecialOffers from './pages/SpecialOffers';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import SearchResults from './pages/SearchResults';
 import ContactUs from './pages/ContactUs';
 import ViewMenu from './components/ViewMenu';
 import Checkout from './pages/Checkout';
@@ -18,9 +19,12 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import ErrorBoundary from './components/ErrorBoundary';
 import MyAccount from './components/MyAccount';
+import Events from './components/Events';
+import MakeYourCoffee from './pages/MakeYourCoffee';
+import GetToken from './components/GetToken';
 import './styles.css';
 
-const stripePromise = loadStripe('pk_test_51Pju1z08k0nHIvbw5cvH5RvHpaKxzOJBcNCKKRpkJ');
+const stripePromise = loadStripe('your-stripe-public-key');
 
 const App = () => {
   return (
@@ -32,6 +36,7 @@ const App = () => {
         <Elements stripe={stripePromise}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/search-results" element={<SearchResults />} />
             <Route path="/view-menu" element={<ViewMenu />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/wishlist" element={<Wishlist />} />
@@ -43,12 +48,15 @@ const App = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/:id" element={<Order />} />
             <Route path="/my-account" element={<MyAccount />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/make-your-coffee" element={<MakeYourCoffee />} />
+            <Route path="/get-token" element={<GetToken />} />
           </Routes>
         </Elements>
         <Footer />
       </div>
     </Router>
-  </ErrorBoundary>
+    </ErrorBoundary>
   );
 };
 
