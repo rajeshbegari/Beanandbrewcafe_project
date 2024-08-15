@@ -125,23 +125,23 @@ const BookTable = () => {
         <div className="col-md-6">
           <div className="row">
             <div className="col-md-6 mb-3">
-              <div className="image-wrapper">
-                <img src="images/ScrollingBanner2.jpeg" alt="Image 1" className="img-fluid" />
+            <div className="image-wrapper">
+                <img src={process.env.PUBLIC_URL + '/images/scrollingBanner5.jpeg'} alt="scrollingBanner5" className="img-fluid" />
               </div>
             </div>
             <div className="col-md-6 mb-3">
               <div className="image-wrapper">
-                <img src="images/ScrollingBanner7.jpeg" alt="Image 2" className="img-fluid" />
+                <img src={process.env.PUBLIC_URL + '/images/scrollingBanner7.jpeg'} alt="scrollingBanner7" className="img-fluid" />
               </div>
             </div>
             <div className="col-md-6 mb-3">
               <div className="image-wrapper">
-                <img src="images/ScrollingBanner5.jpeg" alt="Image 3" className="img-fluid" />
+                <img src={process.env.PUBLIC_URL + '/images/scrollingBanner6.jpeg'} alt="scrollingBanner6" className="img-fluid" />
               </div>
             </div>
             <div className="col-md-6 mb-3">
               <div className="image-wrapper">
-                <img src="images/ScrollingBanner6.jpeg" alt="Image 4" className="img-fluid" />
+                <img src={process.env.PUBLIC_URL + '/images/scrollingBanner4.jpeg'} alt="scrollingBanner4" className="img-fluid" />
               </div>
             </div>
           </div>
