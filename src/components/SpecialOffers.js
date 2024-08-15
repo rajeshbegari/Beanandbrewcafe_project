@@ -1,10 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { offers } from '../data/offers';
 import PayPalButton from './PaypalButton';
 
 const SpecialOffers = () => {
-  const { addToCart, addToWishlist } = useContext(ShopContext);
+  const { addToCart, addToWishlist, notification, clearNotification } = useContext(ShopContext);
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        clearNotification();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification, clearNotification]);
 
   return (
     <div className="container">
@@ -15,12 +24,15 @@ const SpecialOffers = () => {
             <img src={offer.image} alt={offer.name} />
             <h3>{offer.name}</h3>
             <p>{offer.price}</p>
-            <button onClick={() => addToCart(offer)}>Add to Cart</button>
+            <button onClick={() => addToCart({ ...offer, price: offer.price })}>
+              Add to Cart
+            </button>
             <button onClick={() => addToWishlist(offer)}>Add to Wishlist</button>
             <PayPalButton amount={offer.price.replace('$', '')} />
           </div>
         ))}
       </div>
+      {notification && <div className="notification">{notification}</div>}
     </div>
   );
 };
