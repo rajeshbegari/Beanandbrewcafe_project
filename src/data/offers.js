@@ -1,40 +1,38 @@
-export const offers = [
+ export const offers = [
     {
       id: 1,
       name: 'Latte',
-      price: '$4.99',
-      image: '/images/coffeetype.jpg',
+      beforePrice: '$6.99',
+      currentPrice: '$4.99',
+      image: `${process.env.PUBLIC_URL}/images/coffeetype.jpg`,
     },
     {
       id: 2,
       name: 'Cappuccino',
-      price: '$5.49',
-      image: '/images/scrollingbanner6.jpeg',
+      beforePrice: '$7.49',
+      currentPrice: '$5.49',
+      image: `${process.env.PUBLIC_URL}/images/scrollingbanner6.jpeg`,
     },
-
     {
-        id: 2,
-        name: 'Cappuccino',
-        price: '$5.49',
-        image: '/images/scrollingbanner10.jpeg',
-      },
-
-      {
-        id: 2,
-        name: 'Cappuccino',
-        price: '$5.49',
-        image: '/images/scrollingbanner2.jpeg',
-      },
-
-
-      {
-        id: 2,
-        name: 'Cappuccino',
-        price: '$5.49',
-        image: '/images/scrollingbanner4.jpeg',
-      },
-
-
-    
+      id: 3,
+      name: 'Mocha',
+      beforePrice: '$6.99',
+      currentPrice: '$4.99',
+      image: `${process.env.PUBLIC_URL}/images/scrollingbanner10.jpeg`,
+    },
+    {
+      id: 4,
+      name: 'Espresso',
+      beforePrice: '$5.99',
+      currentPrice: '$3.99',
+      image: `${process.env.PUBLIC_URL}/images/scrollingbanner2.jpeg`,
+    },
+    {
+      id: 5,
+      name: 'Flat White',
+      beforePrice: '$6.49',
+      currentPrice: '$4.49',
+      image: `${process.env.PUBLIC_URL}/images/scrollingbanner4.jpeg`,
+    },
     // Add more offers as needed
   ];
