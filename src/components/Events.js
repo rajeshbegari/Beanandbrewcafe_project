@@ -64,7 +64,7 @@ const pastEvents = [
     title: "Latte Art Workshop",
     description: "Learn the art of making lattes with beautiful designs in this hands-on workshop.",
     date: "April 5, 2023",
-    imageUrl: `${process.env.PUBLIC_URL}/images/ife2.jpeg`,
+    imageUrl: `${process.env.PUBLIC_URL}/images/ife6.jpeg`,
   }
 ];
 
